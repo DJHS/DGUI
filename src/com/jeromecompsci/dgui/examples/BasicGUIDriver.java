@@ -2,8 +2,8 @@ package com.jeromecompsci.dgui.examples;
 import com.jeromecompsci.dgui.*;
 
 /**
- * An example akin to BasicGUI (found at https://github.com/BasicGUI)
- * This utility class is akin "YourCode" in the original BasicGUI
+ * An example akin to BasicGUI (found at https://github.com/DJHS/BasicGUI)
+ * This utility class is akin to "YourCode" in the original BasicGUI
  * @author Derek Wang
  */
 public class BasicGUIDriver {
