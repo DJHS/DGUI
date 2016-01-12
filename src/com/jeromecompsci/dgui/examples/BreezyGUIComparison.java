@@ -5,7 +5,7 @@ import com.jeromecompsci.dgui.*;
  * This class is meant to implement the same UI layout and widgets
  * as the example given by BreezyGUI (using their toolkit)
  * at http://mathbits.com/MathBits/Java/UsingBreezyGUI/ControllingWindow.htm
- * for the sake of comparison. See README.md -> Goals for more details.
+ * for the sake of comparison. See Philosophy.md for more details.
  *
  * This file exhibits comments that outline how DGUI embodies our goals,
  * we provide a "NoComments" version if you would prefer to read this
