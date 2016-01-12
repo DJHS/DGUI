@@ -29,15 +29,15 @@ public class BreezyGUIComparisonNoComments {
     }
 
     public void poundsButtonClicked() {
-        double pounds = Double.parseDouble(poundsField.getText());
-        double ounces = 16 * pounds;
-        ouncesField.setText(String.format("%.2f", ounces));
-    }
-
-    public void ouncesButtonClicked() {
         double ounces = Double.parseDouble(ouncesField.getText());
         double pounds = ounces / 16;
         poundsField.setText(String.format("%.2f", pounds));
+    }
+
+    public void ouncesButtonClicked() {
+        double pounds = Double.parseDouble(poundsField.getText());
+        double ounces = 16 * pounds;
+        ouncesField.setText(String.format("%.2f", ounces));
     }
 
     public static void main(String[] args) {
