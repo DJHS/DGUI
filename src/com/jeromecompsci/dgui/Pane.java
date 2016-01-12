@@ -5,7 +5,7 @@ import javax.swing.*;
 /**
  * @author derek
  */
-public class Pane extends Widget {
+class Pane extends Widget {
     private JPanel panel;
     private SpringLayout layout;
 
