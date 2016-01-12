@@ -7,31 +7,11 @@ import java.lang.reflect.InvocationTargetException;
  */
 abstract class BindableWidget extends Widget {
     public void bind(final Object obj, final String methodName) {
-        addBindingAsListener(new Binding() {
-            @Override Class getTargetClass() {
-                return obj.getClass();
-            }
-            @Override Object getTargetObject() {
-                return obj;
-            }
-            @Override String getTargetMethodName() {
-                return methodName;
-            }
-        });
+        addBindingAsListener(new Binding(obj.getClass(), obj, methodName));
     }
 
     public void bind(final Class cls, final String methodName) {
-        addBindingAsListener(new Binding() {
-            @Override Class getTargetClass() {
-                return cls;
-            }
-            @Override Object getTargetObject() {
-                return null;
-            }
-            @Override String getTargetMethodName() {
-                return methodName;
-            }
-        });
+        addBindingAsListener(new Binding(cls, null, methodName));
     }
 
     abstract void addBindingAsListener(final Binding binding);
@@ -40,15 +20,21 @@ abstract class BindableWidget extends Widget {
 /**
  * @author Derek Wang
  */
-abstract class Binding {
+class Binding {
 
-    abstract Class getTargetClass();
-    abstract Object getTargetObject();
-    abstract String getTargetMethodName();
+    private Class targetClass;
+    private Object targetObject;
+    private String targetMethodName;
+
+    public Binding(Class targetClass, Object targetObject, String targetMethodName) {
+        this.targetClass = targetClass;
+        this.targetObject = targetObject;
+        this.targetMethodName = targetMethodName;
+    }
 
     void executeBoundMethod() {
         try {
-            getTargetClass().getMethod(getTargetMethodName()).invoke(getTargetObject());
+            targetClass.getMethod(targetMethodName).invoke(targetObject);
         } catch (NoSuchMethodException e) {
             e.printStackTrace(System.err);
         } catch (IllegalAccessException e) {
