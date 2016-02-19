@@ -52,6 +52,13 @@ final class SpringUtilities {
     }
 
     /**
+     * Proxy method to makeCompactGrid() with default padding
+     */
+    public static void makeCompactGrid(Container parent, int rows, int cols) {
+        makeCompactGrid(parent, rows, cols, Widget.PADDING, Widget.PADDING, Widget.PADDING, Widget.PADDING);
+    }
+
+    /**
      * Aligns the first <code>rows</code> * <code>cols</code>
      * components of <code>parent</code> in
      * a grid. Each component is as big as the maximum
