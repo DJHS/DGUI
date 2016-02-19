@@ -39,8 +39,8 @@ public class BreezyGUIComparison {
          * They are reflection-based (b/c Java does not have clean syntactical
          * sugar for callbacks -- but they closely resemble such callbacks found
          * in other toolkits */
-        poundsButton.bind(this, "poundsButtonClicked");
-        ouncesButton.bind(this, "ouncesButtonClicked");
+        poundsButton.on("click", this, "poundsButtonClicked");
+        ouncesButton.on("click", this, "ouncesButtonClicked");
 
         /* Our layout: see that it's separate from the Widget-initialization
          * code and observe how the code reveals the structure of the window */

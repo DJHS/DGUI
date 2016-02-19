@@ -16,8 +16,8 @@ public class BreezyGUIComparisonNoComments {
         poundsButton = new Button("To Pounds");
         ouncesButton = new Button("To Ounces");
 
-        poundsButton.bind(this, "poundsButtonClicked");
-        ouncesButton.bind(this, "ouncesButtonClicked");
+        poundsButton.on("click", this, "poundsButtonClicked");
+        ouncesButton.on("click", this, "ouncesButtonClicked");
 
         window = new Window(
             new VPane(

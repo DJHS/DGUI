@@ -6,15 +6,15 @@ import java.lang.reflect.InvocationTargetException;
  * @author Derek Wang
  */
 abstract class BindableWidget extends Widget {
-    public void bind(final Object obj, final String methodName) {
-        addBindingAsListener(new Binding(obj.getClass(), obj, methodName));
+    public void on(String evt, final Object obj, final String methodName) {
+        addBindingForEvent(evt, new Binding(obj.getClass(), obj, methodName));
     }
 
-    public void bind(final Class cls, final String methodName) {
-        addBindingAsListener(new Binding(cls, null, methodName));
+    public void on(String evt, final Class cls, final String methodName) {
+        addBindingForEvent(evt, new Binding(cls, null, methodName));
     }
 
-    abstract void addBindingAsListener(final Binding binding);
+    abstract void addBindingForEvent(String evt, final Binding binding);
 }
 
 /**
@@ -42,5 +42,11 @@ class Binding {
         } catch (InvocationTargetException e) {
             e.printStackTrace(System.err);
         }
+    }
+}
+
+class NoSuchEventException extends RuntimeException {
+    public NoSuchEventException(String s) {
+        super("Cannot bind non-existent event '" + s + "' with method .on(...).");
     }
 }

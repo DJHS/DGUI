@@ -19,7 +19,7 @@ public class AdditionProgram {
         calculateButton = new Button(" = ");
 
         resultLabel.setWidth(100);
-        calculateButton.bind(this, "calculateButtonClicked");
+        calculateButton.on("click", this, "calculateButtonClicked");
 
         window = new Window(
                 new HCompactPane(new Label("A "), entryA, new Label(" + "), new Label("B "), entryB, calculateButton, resultLabel)

@@ -28,12 +28,18 @@ public class Button extends BindableWidget implements TextBased {
         button.setText(s);
     }
 
-    @Override void addBindingAsListener(final Binding binding) {
-        button.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent actionEvent) {
-                binding.executeBoundMethod();
-            }
-        });
+    @Override void addBindingForEvent(String evt, final Binding binding) {
+        switch(evt) {
+            case "click":
+                button.addActionListener(new ActionListener() {
+                    @Override public void actionPerformed(ActionEvent actionEvent) {
+                        binding.executeBoundMethod();
+                    }
+                });
+                break;
+            default:
+                throw new NoSuchEventException(evt);
+        }
     }
 
     @Override public JComponent getInternal() {

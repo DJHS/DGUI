@@ -11,8 +11,8 @@ public class BasicGUIDriver {
 
     public static void main(String[] args) {
         gui = new BasicGUI();
-        gui.button1.bind(BasicGUIDriver.class, "button1Clicked");
-        gui.button2.bind(BasicGUIDriver.class, "button2Clicked");
+        gui.button1.on("click", BasicGUIDriver.class, "button1Clicked");
+        gui.button2.on("click", BasicGUIDriver.class, "button2Clicked");
         /* Write code here to be run at application startup */
     }
 
