@@ -16,7 +16,6 @@ public class Button extends BindableWidget implements TextBased {
     }
     public Button(String name) {
         button = new JButton();
-        setSize(Widget.DEFAULT_WIDTH, Widget.DEFAULT_HEIGHT);
         button.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
         setText(name);
     }

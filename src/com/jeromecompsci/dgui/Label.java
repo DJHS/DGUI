@@ -14,7 +14,6 @@ public class Label extends Widget implements TextBased {
     }
     public Label(String text) {
         label = new JLabel();
-        setSize(Widget.DEFAULT_WIDTH, Widget.DEFAULT_HEIGHT);
         label.setMaximumSize(new Dimension(Integer.MAX_VALUE, Widget.DEFAULT_HEIGHT));
         setText(text);
     }
