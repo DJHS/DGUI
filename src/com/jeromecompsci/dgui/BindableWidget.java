@@ -1,5 +1,6 @@
 package com.jeromecompsci.dgui;
 
+import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -23,23 +24,49 @@ abstract class BindableWidget extends Widget {
  */
 class Binding {
 
-    private Method method;
-    private Object targetObject;
+    private Thread thread;
+    private final Method method;
+    private final Object object;
 
-    public Binding(Class targetClass, Object targetObject, String targetMethodName) {
+
+    public Binding(final Class targetClass, final Object targetObject, final String targetMethodName) {
         try {
-            this.method = targetClass.getMethod(targetMethodName);
+            method = targetClass.getMethod(targetMethodName);
         } catch (NoSuchMethodException e) {
             throw BindingException.forNoSuchMethod(targetMethodName, e);
         }
-        this.targetObject = targetObject;
+        object = targetObject;
     }
 
     void executeBoundMethod() {
-        try {
-            method.invoke(targetObject);
-        } catch (IllegalAccessException|InvocationTargetException e) {
-            throw new BindingException("FATAL: exception incurred in bound method invocation!", e);
+        if (thread == null || !thread.isAlive()) {
+            thread = new Thread() {
+                @Override public void run() {
+                    while(true) {
+                        try {
+                            method.invoke(object);
+                        } catch (IllegalAccessException e) {
+                            throw new BindingException("FATAL: exception incurred in bound method invocation!", e);
+                        } catch (InvocationTargetException e) {
+                            // This is a user-caused error. Print it to them, but keep us running.
+                            e.getCause().printStackTrace();
+                        }
+                        try {
+                            synchronized (this) {
+                                wait();
+                            }
+                        } catch (InterruptedException e) {
+                            throw new BindingException("FATAL: exception incurred in bound method invocation!", e);
+                        }
+                    }
+                }
+            };
+
+            thread.start();
+        } else {
+            synchronized (thread) {
+                thread.notify();
+            }
         }
     }
 }

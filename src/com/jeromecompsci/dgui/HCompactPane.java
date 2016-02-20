@@ -4,8 +4,12 @@ package com.jeromecompsci.dgui;
  * @author Derek Wang
  */
 public class HCompactPane extends Pane {
-    public HCompactPane(Widget... widgets) {
+    public HCompactPane(final Widget... widgets) {
         super(widgets);
-        SpringUtilities.makeCompactGrid(getInternal(), 1, widgets.length);
+        executeOnEDT(new Runnable() {
+            @Override public void run() {
+                SpringUtilities.makeCompactGrid(getInternal(), 1, widgets.length);
+            }
+        });
     }
 }

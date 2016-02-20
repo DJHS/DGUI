@@ -10,41 +10,57 @@ public class Window implements TextBased {
     private JFrame window;
     private SpringLayout layout;
 
-    public Window(Widget mainWidget) {
+    public Window(final Widget mainWidget) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             // Do Nothing: we will simply fall back on default LnF
         }
 
-        window = new JFrame();
-        layout = new SpringLayout();
-        Container c = window.getContentPane();
-        c.setLayout(layout);
+        Widget.executeOnEDT(new Runnable() {
+            @Override public void run() {
+                window = new JFrame();
+                layout = new SpringLayout();
+                Container c = window.getContentPane();
+                c.setLayout(layout);
 
-        window.add(mainWidget.getInternal());
-        SpringUtilities.makeGrid(c, 1, 1);
+                window.add(mainWidget.getInternal());
+                SpringUtilities.makeGrid(c, 1, 1);
 
-        window.pack();
-        window.setMinimumSize(mainWidget.getInternal().getMinimumSize());
-        window.setResizable(false);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setTitle("Window");
+                window.pack();
+                window.setMinimumSize(mainWidget.getInternal().getMinimumSize());
+                window.setResizable(false);
+                window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                window.setTitle("Window");
+            }
+        });
     }
 
     public void show() {
-        window.setVisible(true);
+        Widget.executeOnEDT(new Runnable() {
+            @Override public void run() {
+                window.setVisible(true);
+            }
+        });
     }
 
-    public void setResizeable(boolean b) {
-        window.setResizable(b);
+    public void setResizeable(final boolean b) {
+        Widget.executeOnEDT(new Runnable() {
+            @Override public void run() {
+                window.setResizable(b);
+            }
+        });
     }
 
     @Override public String getText() {
         return window.getTitle();
     }
 
-    @Override public void setText(String s) {
-        window.setTitle(s);
+    @Override public void setText(final String s) {
+        Widget.executeOnEDT(new Runnable() {
+            @Override public void run() {
+                window.setTitle(s);
+            }
+        });
     }
 }

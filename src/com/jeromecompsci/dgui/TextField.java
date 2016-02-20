@@ -13,42 +13,58 @@ public class TextField extends BindableWidget implements TextBased {
     public TextField() {
         this("");
     }
-    public TextField(String initialText) {
-        field = new JTextField();
+    public TextField(final String initialText) {
+        executeOnEDT(new Runnable() {
+            @Override public void run() {
+                field = new JTextField();
+                field.setText(initialText);
+            }
+        });
         setSize(Widget.DEFAULT_WIDTH, Widget.DEFAULT_HEIGHT);
-        setText(initialText);
     }
 
     @Override public String getText() {
         return field.getText();
     }
 
-    @Override public void setText(String s) {
-        field.setText(s);
+    @Override public void setText(final String s) {
+        executeOnEDT(new Runnable() {
+            @Override public void run() {
+                field.setText(s);
+            }
+        });
     }
 
-    @Override void addBindingForEvent(String evt, Binding binding) {
+    @Override void addBindingForEvent(String evt, final Binding binding) {
         switch (evt) {
             case "change":
-                field.addKeyListener(new KeyListener() {
-                    @Override
-                    public void keyTyped(KeyEvent keyEvent) {
-                        binding.executeBoundMethod();
-                    }
+                executeOnEDT(new Runnable() {
+                    @Override public void run() {
+                        field.addKeyListener(new KeyListener() {
+                            @Override
+                            public void keyTyped(KeyEvent keyEvent) {
+                                binding.executeBoundMethod();
+                            }
 
-                    @Override public void keyPressed(KeyEvent keyEvent) { }
-                    @Override public void keyReleased(KeyEvent keyEvent) { }
+                            @Override public void keyPressed(KeyEvent keyEvent) { }
+                            @Override public void keyReleased(KeyEvent keyEvent) { }
+                        });
+                    }
                 });
                 break;
             case "enter":
-                field.addKeyListener(new KeyListener() {
-                    @Override public void keyTyped(KeyEvent keyEvent) { }
-                    @Override public void keyPressed(KeyEvent keyEvent) { }
+                executeOnEDT(new Runnable() {
+                    @Override public void run() {
+                        field.addKeyListener(new KeyListener() {
+                            @Override public void keyTyped(KeyEvent keyEvent) { }
+                            @Override public void keyPressed(KeyEvent keyEvent) { }
 
-                    @Override public void keyReleased(KeyEvent keyEvent) {
-                        if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {
-                            binding.executeBoundMethod();
-                        }
+                            @Override public void keyReleased(KeyEvent keyEvent) {
+                                if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {
+                                    binding.executeBoundMethod();
+                                }
+                            }
+                        });
                     }
                 });
                 break;

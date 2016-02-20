@@ -31,9 +31,13 @@ public class Button extends BindableWidget implements TextBased {
     @Override void addBindingForEvent(String evt, final Binding binding) {
         switch(evt) {
             case "click":
-                button.addActionListener(new ActionListener() {
-                    @Override public void actionPerformed(ActionEvent actionEvent) {
-                        binding.executeBoundMethod();
+                executeOnEDT(new Runnable() {
+                    @Override public void run() {
+                        button.addActionListener(new ActionListener() {
+                            @Override public void actionPerformed(ActionEvent actionEvent) {
+                                binding.executeBoundMethod();
+                            }
+                        });
                     }
                 });
                 break;

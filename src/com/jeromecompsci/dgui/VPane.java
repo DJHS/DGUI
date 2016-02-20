@@ -7,8 +7,12 @@ import java.awt.*;
  * @author Derek Wang
  */
 public class VPane extends Pane {
-    public VPane(Widget... widgets) {
+    public VPane(final Widget... widgets) {
         super(widgets);
-        SpringUtilities.makeGrid(getInternal(), widgets.length, 1);
+        executeOnEDT(new Runnable() {
+            @Override public void run() {
+                SpringUtilities.makeGrid(getInternal(), widgets.length, 1);
+            }
+        });
     }
 }

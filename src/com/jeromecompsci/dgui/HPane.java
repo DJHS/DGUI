@@ -7,8 +7,12 @@ import java.awt.*;
  * @author Derek Wang
  */
 public class HPane extends Pane {
-    public HPane(Widget... widgets) {
+    public HPane(final Widget... widgets) {
         super(widgets);
-        SpringUtilities.makeGrid(getInternal(), 1, widgets.length);
+        executeOnEDT(new Runnable() {
+            @Override public void run() {
+                SpringUtilities.makeGrid(getInternal(), 1, widgets.length);
+            }
+        });
     }
 }
