@@ -53,7 +53,7 @@ public class TextField extends BindableWidget implements TextBased {
                 });
                 break;
             default:
-                throw new NoSuchEventException(evt);
+                throw BindingException.forNonExistentEvent(evt);
         }
     }
 

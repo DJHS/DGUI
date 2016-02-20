@@ -1,6 +1,7 @@
 package com.jeromecompsci.dgui;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * @author Derek Wang
@@ -22,31 +23,41 @@ abstract class BindableWidget extends Widget {
  */
 class Binding {
 
-    private Class targetClass;
+    private Method method;
     private Object targetObject;
-    private String targetMethodName;
 
     public Binding(Class targetClass, Object targetObject, String targetMethodName) {
-        this.targetClass = targetClass;
+        try {
+            this.method = targetClass.getMethod(targetMethodName);
+        } catch (NoSuchMethodException e) {
+            throw BindingException.forNoSuchMethod(targetMethodName, e);
+        }
         this.targetObject = targetObject;
-        this.targetMethodName = targetMethodName;
     }
 
     void executeBoundMethod() {
         try {
-            targetClass.getMethod(targetMethodName).invoke(targetObject);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace(System.err);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace(System.err);
-        } catch (InvocationTargetException e) {
-            e.printStackTrace(System.err);
+            method.invoke(targetObject);
+        } catch (IllegalAccessException|InvocationTargetException e) {
+            throw new BindingException("FATAL: exception incurred in bound method invocation!", e);
         }
     }
 }
 
-class NoSuchEventException extends RuntimeException {
-    public NoSuchEventException(String s) {
-        super("Cannot bind non-existent event '" + s + "' with method .on(...).");
+class BindingException extends RuntimeException {
+    public BindingException(String message) {
+        super(message);
+    }
+
+    public BindingException(String message, Throwable t) {
+        super(message, t);
+    }
+
+    static BindingException forNonExistentEvent(String eventName) {
+        return new BindingException("Cannot bind non-existent event '" + eventName + "' with method .on(...).");
+    }
+
+    static BindingException forNoSuchMethod(String methodName, Throwable t) {
+        return new BindingException("Method " + methodName + "() does not exist (or improper syntax used for static vs. non-static). Cannot bind.", t);
     }
 }
