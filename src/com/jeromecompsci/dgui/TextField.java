@@ -1,11 +1,13 @@
 package com.jeromecompsci.dgui;
 
 import javax.swing.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
  * @author Derek Wang
  */
-public class TextField extends Widget implements TextBased {
+public class TextField extends BindableWidget implements TextBased {
     private JTextField field;
 
     public TextField() {
@@ -25,7 +27,38 @@ public class TextField extends Widget implements TextBased {
         field.setText(s);
     }
 
+    @Override void addBindingForEvent(String evt, Binding binding) {
+        switch (evt) {
+            case "change":
+                field.addKeyListener(new KeyListener() {
+                    @Override
+                    public void keyTyped(KeyEvent keyEvent) {
+                        binding.executeBoundMethod();
+                    }
+
+                    @Override public void keyPressed(KeyEvent keyEvent) { }
+                    @Override public void keyReleased(KeyEvent keyEvent) { }
+                });
+                break;
+            case "enter":
+                field.addKeyListener(new KeyListener() {
+                    @Override public void keyTyped(KeyEvent keyEvent) { }
+                    @Override public void keyPressed(KeyEvent keyEvent) { }
+
+                    @Override public void keyReleased(KeyEvent keyEvent) {
+                        if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {
+                            binding.executeBoundMethod();
+                        }
+                    }
+                });
+                break;
+            default:
+                throw new NoSuchEventException(evt);
+        }
+    }
+
     @Override public JComponent getInternal() {
         return field;
     }
+
 }
