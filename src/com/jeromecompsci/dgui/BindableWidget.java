@@ -1,6 +1,5 @@
 package com.jeromecompsci.dgui;
 
-import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 

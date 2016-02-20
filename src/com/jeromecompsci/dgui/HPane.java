@@ -1,8 +1,5 @@
 package com.jeromecompsci.dgui;
 
-import javax.swing.*;
-import java.awt.*;
-
 /**
  * @author Derek Wang
  */

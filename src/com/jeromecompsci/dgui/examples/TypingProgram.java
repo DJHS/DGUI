@@ -1,9 +1,6 @@
 package com.jeromecompsci.dgui.examples;
 
 import com.jeromecompsci.dgui.*;
-import com.jeromecompsci.dgui.Label;
-import com.jeromecompsci.dgui.TextField;
-import com.jeromecompsci.dgui.Window;
 
 /**
  * @author Derek Wang
