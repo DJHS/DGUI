@@ -62,6 +62,7 @@ class Binding {
                 }
             };
 
+            thread.setName("DGUI-Binding");
             thread.start();
         } else {
             synchronized (thread) {
